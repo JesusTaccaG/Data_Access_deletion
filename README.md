@@ -41,5 +41,5 @@ docker-compose up
 - Output 1 <br/>
 &nbsp;<img src="./img/7.jpeg" height="70">
 - Output 2 <br/>
-&nbsp;<img src="./img/7.jpeg" height="70">
+&nbsp;<img src="./img/8.jpeg" height="70">
 
