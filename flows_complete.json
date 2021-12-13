@@ -1,0 +1,838 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "ad3a10e7b3086d22",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "dc3a1e0667ab0c1e",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "84ade89226c9ed92",
+        "type": "tab",
+        "label": "Flow 4",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "10a3fd8047ce8dbe",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6949686ed4de7f93",
+        "type": "tab",
+        "label": "Flow 6",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8ab62c3c41f0ce37",
+        "type": "tab",
+        "label": "Flow 7",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f403c9d8b6e97ab5",
+        "type": "tab",
+        "label": "Flow 8",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "257348e796a4bc43",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.51",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "677c98630cb31061",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "192.168.1.51",
+        "port": "6033",
+        "db": "tSeriesDB",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "67cbdeddb28be9b7",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "15",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 240,
+        "wires": [
+            [
+                "f6be028207c7fa2f",
+                "91d534f2ef6c41e1"
+            ]
+        ]
+    },
+    {
+        "id": "f6be028207c7fa2f",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "91d534f2ef6c41e1",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "timestamp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "257348e796a4bc43",
+        "x": 510,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "69d9fbb92f37762b",
+        "type": "http in",
+        "z": "ad3a10e7b3086d22",
+        "name": "",
+        "url": "/pub/:topic/:payload",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "063c2b14762a312a"
+            ]
+        ]
+    },
+    {
+        "id": "063c2b14762a312a",
+        "type": "function",
+        "z": "ad3a10e7b3086d22",
+        "name": "create message",
+        "func": "msg.topic = msg.req.params.topic;\nmsg.payload = msg.req.params.payload;\nmsg.qos = 2;\nmsg.retain = false;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 260,
+        "wires": [
+            [
+                "71ef6f7be66e46fb",
+                "72ad46d9c8e2ab24"
+            ]
+        ]
+    },
+    {
+        "id": "71ef6f7be66e46fb",
+        "type": "function",
+        "z": "ad3a10e7b3086d22",
+        "name": "create message",
+        "func": "msg.payload = {\n    success: true,\n    message: \"published \" +\n        msg.req.params.topic +\n        \"/\" +\n        msg.req.params.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 260,
+        "wires": [
+            [
+                "363559ea083e8da0"
+            ]
+        ]
+    },
+    {
+        "id": "363559ea083e8da0",
+        "type": "http response",
+        "z": "ad3a10e7b3086d22",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 710,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "72ad46d9c8e2ab24",
+        "type": "mqtt out",
+        "z": "ad3a10e7b3086d22",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "257348e796a4bc43",
+        "x": 510,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "3ebb988861131f62",
+        "type": "mqtt in",
+        "z": "dc3a1e0667ab0c1e",
+        "name": "listen everything",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "257348e796a4bc43",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "efbfbccee15a0a9b"
+            ]
+        ]
+    },
+    {
+        "id": "e565641f9c30fd1e",
+        "type": "debug",
+        "z": "dc3a1e0667ab0c1e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "efbfbccee15a0a9b",
+        "type": "function",
+        "z": "dc3a1e0667ab0c1e",
+        "name": "create query",
+        "func": "// Create query\n// get microtime\nvar timestamp = new Date().getTime()/1000;\n// pad it with trailing zeroes\ntimestamp = timestamp.toString() + \"000\";\n// trim to exact length 10 + 1 + 3\ntimestamp = timestamp.substring(0, 14);\nvar strQuery = \"INSERT INTO thingData (topic, payload, timestamp, deleted) VALUES ('\" + escape(msg. topic) + \"','\" + escape(msg.payload) + \"','\" + timestamp + \"', 0);\"; \nmsg.topic = strQuery;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "c2ef3fc732fb7f88"
+            ]
+        ]
+    },
+    {
+        "id": "c2ef3fc732fb7f88",
+        "type": "mysql",
+        "z": "dc3a1e0667ab0c1e",
+        "mydb": "677c98630cb31061",
+        "name": "",
+        "x": 560,
+        "y": 280,
+        "wires": [
+            [
+                "e565641f9c30fd1e"
+            ]
+        ]
+    },
+    {
+        "id": "63d8416be74abd63",
+        "type": "http in",
+        "z": "84ade89226c9ed92",
+        "name": "",
+        "url": "/get/:topic",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "98595ba380caac53"
+            ]
+        ]
+    },
+    {
+        "id": "5d3c775bf8ae05d4",
+        "type": "http in",
+        "z": "84ade89226c9ed92",
+        "name": "",
+        "url": "/get/:topic/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 340,
+        "wires": [
+            [
+                "98595ba380caac53"
+            ]
+        ]
+    },
+    {
+        "id": "98595ba380caac53",
+        "type": "function",
+        "z": "84ade89226c9ed92",
+        "name": "create query",
+        "func": "// Create query\n// if required record count is not specified\n// set default to 1\nif(!msg.req.params.count)\nmsg.req.params.count = 1;\n// build the sql query\nmsg.topic = \"SELECT id,topic,payload,timestamp \" + \"FROM thingData \" + \"WHERE topic='\" + escape(msg.req.params.topic) + \"' \" + \"AND deleted=0 \" + \"ORDER BY id DESC \" + \"LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 300,
+        "wires": [
+            [
+                "7967a09063fc2d1c"
+            ]
+        ]
+    },
+    {
+        "id": "7967a09063fc2d1c",
+        "type": "mysql",
+        "z": "84ade89226c9ed92",
+        "mydb": "677c98630cb31061",
+        "name": "",
+        "x": 500,
+        "y": 300,
+        "wires": [
+            [
+                "d989b4123301caec"
+            ]
+        ]
+    },
+    {
+        "id": "d989b4123301caec",
+        "type": "function",
+        "z": "84ade89226c9ed92",
+        "name": "prepare response",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 300,
+        "wires": [
+            [
+                "3deb7d994370462d"
+            ]
+        ]
+    },
+    {
+        "id": "3deb7d994370462d",
+        "type": "http response",
+        "z": "84ade89226c9ed92",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 870,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "5e3968b3daaec5f3",
+        "type": "http in",
+        "z": "6949686ed4de7f93",
+        "name": "",
+        "url": "/get/topicLike/:topic/payloadLike/:payload/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 260,
+        "wires": [
+            [
+                "5ad05e64c8756a8c"
+            ]
+        ]
+    },
+    {
+        "id": "5ad05e64c8756a8c",
+        "type": "function",
+        "z": "6949686ed4de7f93",
+        "name": "creaty query",
+        "func": "if(!msg.req.authFilter)\nmsg.req.authFilter = 1;\n// wildcard used for API query is * and this needs to be converted into SQL wildcard character %\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n            \" FROM thingData WHERE\" +\n            \" topic LIKE '\" + msg.req.params.topic.\n            replace(/\\*/g, \"%\") + \"'\" +\n            \" AND\" +\n            \" payload LIKE '\" + msg.req.params.payload.\n            replace(/\\*/g, \"%\") + \"'\" +\n            \" AND deleted=0\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" ORDER BY ID DESC\" +\n            \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [
+                "95c51b757770aa0b"
+            ]
+        ]
+    },
+    {
+        "id": "95c51b757770aa0b",
+        "type": "mysql",
+        "z": "6949686ed4de7f93",
+        "mydb": "677c98630cb31061",
+        "name": "",
+        "x": 700,
+        "y": 260,
+        "wires": [
+            [
+                "549f91faa0a98781"
+            ]
+        ]
+    },
+    {
+        "id": "549f91faa0a98781",
+        "type": "function",
+        "z": "6949686ed4de7f93",
+        "name": "prepare response",
+        "func": "msg.payload = {\n         \"smsTo\": msg.topic,\n         \"message\": msg.payload,\n         \"status\": \"queued\"\n        };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 260,
+        "wires": [
+            [
+                "259cf42b9999fa6b"
+            ]
+        ]
+    },
+    {
+        "id": "259cf42b9999fa6b",
+        "type": "http response",
+        "z": "6949686ed4de7f93",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1070,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "90e8ddae92e5fe61",
+        "type": "http in",
+        "z": "8ab62c3c41f0ce37",
+        "name": "",
+        "url": "/get/:topic/after/:time/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 155,
+        "y": 195,
+        "wires": [
+            [
+                "5425d3bf65a6c156"
+            ]
+        ]
+    },
+    {
+        "id": "2c647d3fda3d5dc5",
+        "type": "http in",
+        "z": "8ab62c3c41f0ce37",
+        "name": "",
+        "url": "/get/:topic/before/:time/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 165,
+        "y": 255,
+        "wires": [
+            [
+                "3a948b4d8ae00ef7"
+            ]
+        ]
+    },
+    {
+        "id": "9c75e9fabb9f9ec7",
+        "type": "http in",
+        "z": "8ab62c3c41f0ce37",
+        "name": "",
+        "url": "/get/:topic/during/:start/:end/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 175,
+        "y": 315,
+        "wires": [
+            [
+                "42e1bbb5b937dfd3"
+            ]
+        ]
+    },
+    {
+        "id": "5425d3bf65a6c156",
+        "type": "function",
+        "z": "8ab62c3c41f0ce37",
+        "name": "create 'AFTER' query",
+        "func": "if(!msg.req.authFilter)\nmsg.req.authFilter = 1;\n// wildcard used for API query is * and this needs to be converted into SQL wildcard character %\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n            \" FROM thingData WHERE\" +\n            \" topic LIKE '\" + msg.req.params.topic.\n            replace(/\\*/g, \"%\") + \"'\" +\n            \" AND\" +\n            \" timestamp >= '\" + msg.req.params.time + \"'\" +\n            \" AND deleted=0\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" ORDER BY ID DESC\" +\n            \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 195,
+        "wires": [
+            [
+                "0fbad1643a1222c4"
+            ]
+        ]
+    },
+    {
+        "id": "3a948b4d8ae00ef7",
+        "type": "function",
+        "z": "8ab62c3c41f0ce37",
+        "name": "create 'BEFORE' query",
+        "func": "if(!msg.req.authFilter)\nmsg.req.authFilter = 1;\n// wildcard used for API query is * and this needs to be converted into SQL wildcard character %\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n            \" FROM thingData WHERE\" +\n            \" topic LIKE '\" + msg.req.params.topic.\n            replace(/\\*/g, \"%\") + \"'\" +\n            \" AND\" +\n            \" timestamp <= '\" + msg.req.params.time + \"'\" +\n            \" AND deleted=0\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" ORDER BY ID DESC\" +\n            \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 255,
+        "wires": [
+            [
+                "0fbad1643a1222c4"
+            ]
+        ]
+    },
+    {
+        "id": "42e1bbb5b937dfd3",
+        "type": "function",
+        "z": "8ab62c3c41f0ce37",
+        "name": "create 'DURING' query",
+        "func": "if(!msg.req.authFilter)\nmsg.req.authFilter = 1;\n// wildcard used for API query is * and this needs to be converted into SQL wildcard character %\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n            \" FROM thingData WHERE\" +\n            \" topic LIKE '\" + msg.req.params.topic.\n            replace(/\\*/g, \"%\") + \"'\" +\n            \" AND\" +\n            \" timestamp >= '\" + msg.req.params.start + \"'\" +\n            \" AND\" +\n            \" timestamp <='\" + msg.req.params.end + \"'\" +\n            \" AND deleted=0\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" ORDER BY ID DESC\" +\n            \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 315,
+        "wires": [
+            [
+                "0fbad1643a1222c4"
+            ]
+        ]
+    },
+    {
+        "id": "0fbad1643a1222c4",
+        "type": "mysql",
+        "z": "8ab62c3c41f0ce37",
+        "mydb": "677c98630cb31061",
+        "name": "",
+        "x": 675,
+        "y": 255,
+        "wires": [
+            [
+                "83bfc0fed3cb5089"
+            ]
+        ]
+    },
+    {
+        "id": "83bfc0fed3cb5089",
+        "type": "function",
+        "z": "8ab62c3c41f0ce37",
+        "name": "prepare response",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 255,
+        "wires": [
+            [
+                "2b9c025dc76449dc"
+            ]
+        ]
+    },
+    {
+        "id": "2b9c025dc76449dc",
+        "type": "http response",
+        "z": "8ab62c3c41f0ce37",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1040,
+        "y": 255,
+        "wires": []
+    },
+    {
+        "id": "feb0b5f1b652d7cb",
+        "type": "http in",
+        "z": "f403c9d8b6e97ab5",
+        "name": "",
+        "url": "/delete/:topic/id/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "cf466bab17e3ba8e"
+            ]
+        ]
+    },
+    {
+        "id": "e52f3e185377b377",
+        "type": "http in",
+        "z": "f403c9d8b6e97ab5",
+        "name": "",
+        "url": "/delete/:topic",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 255,
+        "wires": [
+            [
+                "c208e2396d8df93d"
+            ]
+        ]
+    },
+    {
+        "id": "7e0fa47c78544a46",
+        "type": "http in",
+        "z": "f403c9d8b6e97ab5",
+        "name": "",
+        "url": "/delete/:topic/first/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 330,
+        "wires": [
+            [
+                "a51a4094c5504ed3"
+            ]
+        ]
+    },
+    {
+        "id": "76a6da71f167aed3",
+        "type": "http in",
+        "z": "f403c9d8b6e97ab5",
+        "name": "",
+        "url": "/delete/:topic/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 405,
+        "wires": [
+            [
+                "c8709e07481d9a4f"
+            ]
+        ]
+    },
+    {
+        "id": "cf466bab17e3ba8e",
+        "type": "function",
+        "z": "f403c9d8b6e97ab5",
+        "name": "create query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\n    msg.topic = \"UPDATE thingData\" +\n                \" SET deleted=1\" +\n                \" WHERE\" +\n                \" topic='\" + msg.req.params.topic + \"'\" +\n                \" AND (\" + msg.req.authFilter + \")\" +\n                \" AND id=\" + msg.req.params.id + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "63652a8e5c334b46"
+            ]
+        ]
+    },
+    {
+        "id": "c208e2396d8df93d",
+        "type": "function",
+        "z": "f403c9d8b6e97ab5",
+        "name": "create query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\n    msg.topic = \"UPDATE thingData\" +\n                \" SET deleted=1 \" +\n                \" WHERE\" +\n                \" topic='\" + msg.req.params.topic + \"'\" +\n                \" AND (\" + msg.req.authFilter + \");\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 255,
+        "wires": [
+            [
+                "63652a8e5c334b46"
+            ]
+        ]
+    },
+    {
+        "id": "a51a4094c5504ed3",
+        "type": "function",
+        "z": "f403c9d8b6e97ab5",
+        "name": "create query",
+        "func": "if(!msg.req.params.count)\n    msg.req.params.count = 1;\n// if no authentication filter defined or available\n// set the default value as 1\nif(!msg.req.authFilter)\n    msg.req.authFilter = 1;\nmsg.topic = \"DELETE thingData\" +\n            \" WHERE deleted=1\" +\n            \" AND\" +\n            \" topic='\" + msg.req.params.topic + \"'\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" ORDER BY id DESC LIMIT \" + msg.req.params.count +\n            \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 330,
+        "wires": [
+            [
+                "63652a8e5c334b46"
+            ]
+        ]
+    },
+    {
+        "id": "c8709e07481d9a4f",
+        "type": "function",
+        "z": "f403c9d8b6e97ab5",
+        "name": "create query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\nmsg.topic = \"DELETE thingData\" +\n            \" WHERE deleted=1\" +\n            \" AND\" +\n            \" topic='\" + msg.req.params.topic + \"'\" +\n            \" AND (\" + msg.req.authFilter + \")\" +\n            \" AND id=\" + msg.req.params.id + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 405,
+        "wires": [
+            [
+                "63652a8e5c334b46"
+            ]
+        ]
+    },
+    {
+        "id": "63652a8e5c334b46",
+        "type": "mysql",
+        "z": "f403c9d8b6e97ab5",
+        "mydb": "677c98630cb31061",
+        "name": "",
+        "x": 570,
+        "y": 285,
+        "wires": [
+            [
+                "92128ff0d5ed3fb9"
+            ]
+        ]
+    },
+    {
+        "id": "92128ff0d5ed3fb9",
+        "type": "function",
+        "z": "f403c9d8b6e97ab5",
+        "name": "Prepare response",
+        "func": "msg.payload = {\n            \"found\": msg.payload.affectedRows,\n            \"changed\": msg.payload.changedRows,\n            };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 285,
+        "wires": [
+            [
+                "4a6cdcd091a797e8"
+            ]
+        ]
+    },
+    {
+        "id": "4a6cdcd091a797e8",
+        "type": "http response",
+        "z": "f403c9d8b6e97ab5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 935,
+        "y": 285,
+        "wires": []
+    }
+]
