@@ -17,7 +17,7 @@ docker-compose up
 
 ## Data Access APIs
 - Condition-based data request API sequence <br/>
-&nbsp;<img src="./img/1.jpeg" height="350">
+&nbsp;<img src="./img/1.jpeg" height="150">
 - Output 1 <br/>
 &nbsp;<img src="./img/4.jpeg" height="90">
 - Output 2 <br/>
@@ -39,7 +39,7 @@ docker-compose up
 - Delete API sequence <br/>
 &nbsp;<img src="./img/3.jpeg" height="350">
 - Output 1 <br/>
-&nbsp;<img src="./img/7.jpeg" height="60">
-
-
+&nbsp;<img src="./img/7.jpeg" height="70">
+- Output 2 <br/>
+&nbsp;<img src="./img/7.jpeg" height="70">
 
